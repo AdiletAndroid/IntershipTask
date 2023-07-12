@@ -6,7 +6,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.intershiptask.databinding.ItemRecyclerBinding
 
-class Adapter(private val dataList: List<Model>) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+class Adapter(private val onItemClick: (Model) -> Unit) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+
+    private val dataList = mutableListOf<Model>()
+
+    fun showData(data: List<Model>) {
+        dataList.clear()
+        dataList.addAll(data)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -25,6 +33,16 @@ class Adapter(private val dataList: List<Model>) : RecyclerView.Adapter<Adapter.
 
     inner class ViewHolder(private val binding: ItemRecyclerBinding) : RecyclerView.ViewHolder(binding.root) {
 
+        init {
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val model = dataList[position]
+                    onItemClick.invoke(model)
+                }
+            }
+        }
+
         fun bind(model: Model) {
             Glide.with(binding.imageView)
                 .load(model.image)
@@ -35,5 +53,6 @@ class Adapter(private val dataList: List<Model>) : RecyclerView.Adapter<Adapter.
         }
     }
 }
+
 
 

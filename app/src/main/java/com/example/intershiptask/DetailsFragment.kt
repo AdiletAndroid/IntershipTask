@@ -9,24 +9,24 @@ import com.example.intershiptask.databinding.FragmentDetailsBinding
 
 class DetailsFragment : Fragment() {
     private lateinit var binding: FragmentDetailsBinding
+    private val model: Model by lazy { requireArguments().getParcelable<Model>("key") as Model }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showData(model)
+    }
 
-        val name = arguments?.getString("name")
-        val year = arguments?.getInt("year")
-
-        binding.nameTextView.text = name
-        binding.yearTextView.text = year.toString()
+    private fun showData(dataModel: Model) {
+        with(binding) {
+            nameTextView.text = dataModel.name
+            yearTextView.text = dataModel.year.toString()
+        }
     }
 }
+
 
